@@ -3,6 +3,14 @@
 
 # In[1]:
 
+
+# At the moment I am unfamiliar with much of the inner
+#workings of this code as it does relate to modeling as well.
+# However, I do understand they are training a model to predict
+# pitchers effectiveness so we can then model fatigue moving forward.
+
+# necessary packages for aanlysis.
+
 import pandas as pd
 import numpy as np
 import math
@@ -25,9 +33,11 @@ pd.options.mode.chained_assignment = None
 
 # In[161]:
 
+#  reading in the data
 df = pd.read_csv('../Data/pitch_swing.csv', index_col=0)
 inds = np.random.choice(df.shape[0], df.shape[0], replace=False)
 df = df.iloc[inds].copy()
+
 
 df_all = pd.read_csv('../Data/AllStandardPitches.csv', index_col=0)
 inds_all = np.random.choice(df_all.shape[0], df_all.shape[0], replace=False)
@@ -45,7 +55,10 @@ list(df.pitch_type.unique())
 
 # In[7]:
 
-#k-fold cross validation
+# author: k-fold cross validation
+
+# used to measure pitch effectiveness, also as way to prepare the model. 
+
 def get_best_leaf(df,pitch_list,leaf_list,covariates,folds = 10):
 
     fits={}
@@ -102,8 +115,12 @@ def get_best_leaf(df,pitch_list,leaf_list,covariates,folds = 10):
 
 # In[162]:
 
+# here is where the model is actually run at different intervals (leafs)
 leafs = [1,5,10,25,50];
 pitch_types = list(df.pitch_type.unique())
+
+# these are variables used to quantify pitchers abilities as well as fatigue.
+
 covars = ['start_speed','end_speed','p_throws','pfx_x','pfx_z','vx0','vy0','vz0','ax','ay','az','break_y',
          'break_angle','spin_dir','spin_rate']
 best = get_best_leaf(df,pitch_types,leafs,covars)
@@ -111,6 +128,7 @@ best = get_best_leaf(df,pitch_types,leafs,covars)
 
 # In[155]:
 
+# saving results to a .csv for more analysis 
 best_df = pd.DataFrame(best).T
 out_best = best_df[['kappa','perc_whiff','score']]
 best_df.to_csv('final_avg_scores.csv')

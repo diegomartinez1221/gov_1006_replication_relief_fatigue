@@ -10,6 +10,8 @@ library(dplyr)
 library(R2jags)
 library(R2WinBUGS)
 
+# loading in the data from R as well as python modeling 
+
 load("Data/npitch.Rdata")
 pitch <- read.csv("Data/all_pitches_pred.csv")
 
@@ -25,12 +27,15 @@ relief.lookback[,6:13] <- sapply(relief.lookback[,6:13], function(x){
 pitch$pitcher_name <- as.character(pitch$pitcher_name)
 pitch$gameday_link <- as.character(pitch$gameday_link)
 
-# Only Include Regular Season pitches from 2013-2015
+# only keeping games from the regular season as of now
+
 reg_gameday <- pitch %>%
   filter(reg_season == "True") %>%
   select(gameday_link)
 
 reg_gameday <- as.character(reg_gameday[,1])
+
+# from the fulldataset now filtering to only have regular season pitches.
 
 relief.lookback <- relief.lookback %>%
   filter(gameday_link %in% reg_gameday)
@@ -38,8 +43,12 @@ relief.lookback <- relief.lookback %>%
 pitch <- pitch %>%
   filter(gameday_link %in% reg_gameday)
 
+#author 
 # Aggregate Stuff (for each pitch)
 # Overall Pitches
+
+# looking at the average of the pitchers effectiveness quantified as "stuff" 
+
 avg_stuff_all <- pitch %>%
   group_by(gameday_link, pitcher, pitcher_name) %>%
   summarise(mean_stuff = mean(z_stuff), num.pitches = n()) %>%
@@ -47,9 +56,15 @@ avg_stuff_all <- pitch %>%
   select(-num.pitches) %>%
   arrange(desc(mean_stuff))
 
+# aggregating all the data together.
+
 npitch_all <- inner_join(avg_stuff_all, relief.lookback, by = c("gameday_link","pitcher",
                                                                 "pitcher_name"))
-#Individual Pitches
+
+# looking now at the pitch by pitch level. Every row of the dataset is now one
+# pitch. Now getting the average stats for each pitcher for each of their
+# pitches in the dataset
+
 avg_stuff_indpitch <- pitch %>%
   group_by(gameday_link, pitcher, pitcher_name, pitch_type) %>%
   summarise(mean_stuff = mean(z_stuff), mean_spin = mean(spin_rate),
@@ -59,6 +74,8 @@ avg_stuff_indpitch <- pitch %>%
   select(-num.pitches) %>%
   arrange(desc(mean_stuff))
  
+# dividing fulldataset into sections based on pitch type 
+
 # Four-Seam Fastballs
 npitch_ff <- avg_stuff_indpitch %>%
   filter(pitch_type == "FF") %>%
@@ -104,6 +121,10 @@ npitch_fast <- avg_stuff_indpitch %>%
   filter(pitch_type %in% c("FF","FT","FS")) %>%
   inner_join(relief.lookback)
 
+
+# Modeling section of the code. First tries a simple regression, but proceeds
+# into more advanced modeling
+
 # Frequentist Model
 library(lme4)
 lmer1 <- lmer(mean_stuff ~ (1|pitcher) + npitch1 + npitch2 + npitch3, 
@@ -112,6 +133,7 @@ summary(lmer1)
 
 
 # JAGS Model
+# mode to measure fatigue, looking at variables such as whe was last time pitched the X's 
 
 runJAGSmodel <- function(pitch, y, n.iter = 2000, n.thin = 1){
   mod.data <- list(Y = as.numeric(scale(unlist(pitch[,y]))),
@@ -127,6 +149,8 @@ runJAGSmodel <- function(pitch, y, n.iter = 2000, n.thin = 1){
                    n.pitcher = length(unique(pitch$pitcher))
   )
   
+  
+  # model, I believe it is the toxological model
   
   pitch_model <- function(){
     for(i in 1:n){
@@ -180,6 +204,7 @@ runJAGSmodel <- function(pitch, y, n.iter = 2000, n.thin = 1){
                 sd.a = sd.a, sd.g = sd.g,mu.b=mu.b))
   }
   
+  # results of the model 
   
   parameters = c("alpha","gamma","sd.a", "sd.g","beta", "sd.b","mu.b")
   
@@ -195,6 +220,7 @@ runJAGSmodel <- function(pitch, y, n.iter = 2000, n.thin = 1){
   pitch.bugs
 }
 
+# creates a function to create his plots because creates many similar plots.
 
 makeCoolPlots <- function(dataset, y){
   velo_model <- runJAGSmodel(dataset, y = y)
@@ -207,6 +233,9 @@ makeCoolPlots <- function(dataset, y){
     alpha.ff.mat[,p] <- as.numeric(velo_model[,paste0("alpha[",p,"]")])
     beta.ff.mat[,p] <- as.numeric(velo_model[,paste0("beta[",p,"]")])
   }
+  
+  
+  # in this section there are all the plots we see in the article! 
   
   #Examine posterior means
   library(ggplot2)
