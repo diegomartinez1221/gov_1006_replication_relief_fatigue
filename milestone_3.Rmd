@@ -1,0 +1,22 @@
+---
+title: "Milestone 3"
+author: "Diego Martinez"
+date: "2/21/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+  Out of gas: quantifying fatigue in MLB relievers by Kyle Burris and Jacob Coleman was published in the Journal of Quantitative Analysis in Sports. They seak to answer the question of quantifying velocity loss on MLB relief pitchers based on their usage in the preceding days. The motivation for this project is the increasing importance and reliance on relievers in the MLB today. The bullpen these days are no longer where you stick pitchers that did not work out as starters. There are outstanding arms in taht fill entire bullpens that change the game when they are called up. One of the goals of the paper is to build this model as a tool for MLB managers to use to manage their relievers as an extra piece of evidence when they are deciding if they should bring a reliever in when they have pitched a lot very recently. The recurring example they use and come back to often in the paper is Game 7 of the 2016 World Series where Joe Madden decided to bring Aroldis Chapman, one of the best relievers in all of baseball, into the game even though he had pitched three times in the last four days. Even though he did end up winning in extra innings, Aroldis Chapman gave up a game tying homerun. He is known for his incredible fastball, averaging 100.9 that season, but in that outing in Game 7, his velocity was noticeably down. Burris and Coleman try to quantify this drop in velocity across the league to see if it was worth the risk to bring in a high quality reliever who has pitched very recently.
+  
+  Burris and Coleman scraped data from the MLB Statcast Website to include all pitches thrown from 2015 to 2017 by relief pitchers with at least 200 pitchers thrown in a given year. They chose a very interesting way to analyze the data using methods from toxology. Their approach to figuring out the problem of fatiguing pitchers is to treat each pitch like a toxin or drug that the body is trying to recover from and how much time is needed to recover from it. By treating pitches as a fatiguing toxin, they study the number of pitches thrown and the toxicity of an outing, how long it takes to recover, and what more toxic outings do to mean fastball velocity for each pitcher using a Bayesian hierarchical model. 
+  
+  
+  The results of the study are very intriguing when thinking about how long to allow a reliever to pitch today to also ensure he could pitch tomorrow as well as how much rest a pitcher should be given if they throw x amount of pitches the previous few days. The study finds that on average there are certain thresholds that correspond to the expected velocity loss the next day. If a reliever is held to 15 pitches or less, the effects on fastball velocity loss in subsequent appearances is negligible. However, interestingly, going up to 20 pitches doubles the effect of <=15 pitches. And even more intriguing result is going up from 20 to 30 pitches triples the loss of velocity on fastballs. These effects on loss of velocity do not increase proportionally to the increase in pitch totals. Managers could use this result to impact there decisions on how long to leave a reliever in a game. Relievers usually only pitch an inning, rarely getting extended further unlike starters, thus each pitch is usually thrown with maximum effort. In regards to availability and velocity, a reliever can sustain this maximum effort for short spurts multiple days in a row, but extending them one outing past the mentioned thresholds are where we see significant losses in velocity. From the toxilogical perspective, the body can withstand a certain dosage (pitches), but as the dosage increases, it takes longer to recover. In fact, another result of the study is that on average pitchers regain between 45% and 65% of their stamina per day of rest. However of course, there is variability in the magnitude of the recovery rate between pitchers. 
+  
+  While this is the tip of the iceberg, there are many other cofounding variables that were not looked into such within-game effects on velocity and fatigue accrued over the course of an entire season. However, there finds can still be very useful to managers making tough bullpen decisions.
+  
+  
+
