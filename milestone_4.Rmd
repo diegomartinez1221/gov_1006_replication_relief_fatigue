@@ -1,0 +1,78 @@
+---
+title: "Milestone 4"
+author: "Diego Martinez"
+date: "2/27/2020"
+output: bookdown::pdf_document2
+bibliography: [bibliography.bib]
+biblio-style: "apalike"
+link_citations: false
+toc: false
+
+    
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# necessary packages 
+
+library(bookdown)
+library(tinytex)
+library(gt)
+library(gtsummary)
+library(stargazer)
+library(knitr)
+library(tidyverse)
+library(devtools)
+
+
+
+```
+
+This is my pdf document for milestone 4 of Gov 1006 Final Project. Please refer to the Github repository for my entire project.^[[Github repository](https://github.com/diegomartinez1221/gov_1006_replication_relief_fatigue)] I am replicating Out of gas: quantifying fatigue in MLB relievers ^[[Replication Paper](https://www-degruyter-com.ezp-prod1.hul.harvard.edu/downloadpdf/j/jqas.2018.14.issue-2/jqas-2018-0007/jqas-2018-0007.pdf)] by Kyle Burris and Jacob Coleman. They seak to answer the question of quantifying velocity loss on MLB relief pitchers based on their usage in the preceding days [@burris_coleman_2018]. 
+
+I also make use of @R-knitr, @R-stringr, and @knitr2015 for this milestone.
+
+
+# GT Table 
+
+```{r gt}
+
+# generating random data
+
+data <- data.frame(a = sample(1:100, 5, replace = TRUE), b = sample(1:100, 5, replace = TRUE), c = sample(1:100, 5, replace = TRUE)) 
+
+# creating the gt table 
+
+table<- data%>%
+  gt()
+
+# outputing the table.
+
+table
+```
+
+
+
+# Regression Table
+
+```{r regression, results="asis"}
+
+# generating random data
+
+data2 <- data.frame(a = sample(1:100, 10, replace = TRUE), b = sample(1:100, 10, replace = TRUE), c = sample(1:100, 10, replace = TRUE))
+
+# making regression models for the data 
+
+mod <- lm(data2$a ~ data2$b) 
+mod2<- lm(data2$a ~ data2$c) 
+
+# using stargazer to output the models as a regression table 
+
+stargazer(mod, mod2, header = FALSE,
+          dep.var.labels=c("a"),
+          covariate.labels=c("b", "c"))
+```
+
+
+# References
