@@ -1,0 +1,42 @@
+---
+title: "Milestone 5"
+author: "Diego Martinez"
+date: "3/28/2020"
+output: bookdown::pdf_document2
+bibliography: [bibliography.bib]
+biblio-style: "apalike"
+link_citations: false
+toc: false
+
+    
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# necessary packages 
+
+library(bookdown)
+library(tinytex)
+library(gt)
+library(gtsummary)
+library(stargazer)
+library(knitr)
+library(tidyverse)
+library(devtools)
+
+
+```
+
+
+This is my pdf document for milestone 5 of Gov 1006 Final Project. Please refer to the Github repository for my entire project.^[[All analysis for this paper is available on my Github Reposotory](https://github.com/diegomartinez1221/gov_1006_replication_relief_fatigue)] I am replicating Out of gas: quantifying fatigue in MLB relievers ^[[Replication Paper](https://www-degruyter-com.ezp-prod1.hul.harvard.edu/downloadpdf/j/jqas.2018.14.issue-2/jqas-2018-0007/jqas-2018-0007.pdf)] by Kyle Burris and Jacob Coleman. They seak to answer the question of quantifying velocity loss on MLB relief pitchers based on their usage in the preceding days [@burris_coleman_2018]. 
+
+Burris and Coleman scraped data from the MLB Statcast Website [@baseballsavant.com] to include all pitches thrown from 2015 to 2017 by relief pitchers with at least 200 pitchers thrown in a given year. They chose a very interesting way to analyze the data using methods from toxology. Their approach to figuring out the problem of fatiguing pitchers is to treat each pitch like a toxin or drug that the body is trying to recover from and how much time is needed to recover from it. By treating pitches as a fatiguing toxin, they study the number of pitches thrown and the toxicity of an outing, how long it takes to recover, and what more toxic outings do to mean fastball velocity for each pitcher using a Bayesian hierarchical model.  They began by building a Random Forest model to classify different pitches and give an effectiveness score to ever pitch, using metrics like the speed, vertical and horizontal movement, whiff rate, and etc. With this data, they then create a JAGS model, which is a tool for analysis of Bayesian hierarchical models using Markov Chain Monte Carlo (MCMC) simulation [@su_2015]. JAGS allows users to write their own functions, distributions and samplers. It is here that they incorpate ideas from toxicology to build their fatigue model. 
+  
+  
+  The results of the study are very intriguing when thinking about how long to allow a reliever to pitch today to also ensure he could pitch tomorrow as well as how much rest a pitcher should be given if they throw x amount of pitches the previous few days. The study finds that on average there are certain thresholds that correspond to the expected velocity loss the next day. If a reliever is held to 15 pitches or less, the effects on fastball velocity loss in subsequent appearances is negligible. However, interestingly, going up to 20 pitches doubles the effect of <=15 pitches. And even more intriguing result is going up from 20 to 30 pitches triples the loss of velocity on fastballs. These effects on loss of velocity do not increase proportionally to the increase in pitch totals. Managers could use this result to impact there decisions on how long to leave a reliever in a game. Relievers usually only pitch an inning, rarely getting extended further unlike starters, thus each pitch is usually thrown with maximum effort. In regards to availability and velocity, a reliever can sustain this maximum effort for short spurts multiple days in a row, but extending them one outing past the mentioned thresholds are where we see significant losses in velocity. From the toxilogical perspective, the body can withstand a certain dosage (pitches), but as the dosage increases, it takes longer to recover. In fact, another result of the study is that on average pitchers regain between 45% and 65% of their stamina per day of rest. However of course, there is variability in the magnitude of the recovery rate between pitchers. 
+
+I also make use of @R-knitr, @R-stringr, and @knitr2015 for this milestone.
+
+
+# References
