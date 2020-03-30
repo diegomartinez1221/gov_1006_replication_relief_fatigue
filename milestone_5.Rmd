@@ -29,8 +29,9 @@ library(devtools)
 ```
 
 
-This is my pdf document for milestone 5 of Gov 1006 Final Project. Please refer to the Github repository for my entire project.^[[All analysis for this paper is available on my Github Reposotory](https://github.com/diegomartinez1221/gov_1006_replication_relief_fatigue)] I am replicating Out of gas: quantifying fatigue in MLB relievers ^[[Replication Paper](https://www-degruyter-com.ezp-prod1.hul.harvard.edu/downloadpdf/j/jqas.2018.14.issue-2/jqas-2018-0007/jqas-2018-0007.pdf)] by Kyle Burris and Jacob Coleman. They seak to answer the question of quantifying velocity loss on MLB relief pitchers based on their usage in the preceding days [@burris_coleman_2018]. 
+This is my pdf document for milestone 5 of Gov 1006 Final Project. Please refer to the Github repository for my entire project.^[[All analysis for this paper is available on my Github Reposotory](https://github.com/diegomartinez1221/gov_1006_replication_relief_fatigue)] I am replicating Out of gas: quantifying fatigue in MLB relievers ^[[Replication Paper](https://www-degruyter-com.ezp-prod1.hul.harvard.edu/downloadpdf/j/jqas.2018.14.issue-2/jqas-2018-0007/jqas-2018-0007.pdf)] by Kyle Burris and Jacob Coleman. They seak to answer the question of quantifying velocity loss on MLB relief pitchers based on their usage in the preceding days [@burris_coleman_2018].
 
+# Paper Overview 
 Burris and Coleman scraped data from the MLB Statcast Website [@baseballsavant.com] to include all pitches thrown from 2015 to 2017 by relief pitchers with at least 200 pitchers thrown in a given year. They chose a very interesting way to analyze the data using methods from toxology. Their approach to figuring out the problem of fatiguing pitchers is to treat each pitch like a toxin or drug that the body is trying to recover from and how much time is needed to recover from it. By treating pitches as a fatiguing toxin, they study the number of pitches thrown and the toxicity of an outing, how long it takes to recover, and what more toxic outings do to mean fastball velocity for each pitcher using a Bayesian hierarchical model.  They began by building a Random Forest model to classify different pitches and give an effectiveness score to ever pitch, using metrics like the speed, vertical and horizontal movement, whiff rate, and etc. With this data, they then create a JAGS model, which is a tool for analysis of Bayesian hierarchical models using Markov Chain Monte Carlo (MCMC) simulation [@su_2015]. JAGS allows users to write their own functions, distributions and samplers. It is here that they incorpate ideas from toxicology to build their fatigue model. 
   
   
@@ -39,4 +40,13 @@ Burris and Coleman scraped data from the MLB Statcast Website [@baseballsavant.c
 I also make use of @R-knitr, @R-stringr, and @knitr2015 for this milestone.
 
 
+# Graphic and Table
+The data for the replication paper was not in the Github repo, but he provided a scraper script to collect the data. I have tried running the script, but with no success. My family and I are quarantining at our ranch to distance as much as possible and we do not have any WIFI out here. I have had to do everything with a Hotspot on my phone. I am working with pitch data from the MLB and there are over 700,000 rows of pitches per season for a 9 year span. I did not have the internet connection for the scraping for this milestone. Thus, I was not able to produce a graphic or table.
+
+
+
 # References
+
+
+
+
